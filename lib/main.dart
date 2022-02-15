@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koto/pages/home.dart';
+import 'package:koto/pages/loader.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const Home(),
+        '/': (context) => const Loader(),
+        '/home': (context) => const Home(),
       },
     );
   }

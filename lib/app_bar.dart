@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:koto/const.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -78,7 +79,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final AdvancedDrawerController advController;
   @override
-  Size get preferredSize => const Size.fromHeight(120);
+  Size get preferredSize => const Size.fromHeight(85);
 
   void _launchURL(_url) async {
     if (!await launch(_url)) throw 'Could not launch $_url';
@@ -90,9 +91,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 10,
       backgroundColor: Colors.white,
       toolbarHeight: preferredSize.height,
+      foregroundColor: mainColor,
+      leading: null,
       title: Image.asset(
-        'images/logo2.png',
-        height: 80,
+        'images/logo3.png',
+        height: 70,
       ),
       actions: [
         Row(
