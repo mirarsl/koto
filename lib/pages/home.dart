@@ -1,12 +1,12 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:koto/Network.dart';
 import 'package:koto/const.dart';
-import 'package:koto/pages/news_det.dart';
+import 'package:koto/models/slide_with_image.dart';
+import 'package:koto/models/slide_without_image.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../app_bar.dart';
@@ -39,7 +39,14 @@ class _HomeState extends State<Home> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  void _onRefresh() {
+  void _onRefresh() async {
+    Loader.show(
+      context,
+      progressIndicator: loaderIndicator,
+      overlayColor: mainColor.withOpacity(.8),
+    );
+    await loadPage();
+    Loader.hide();
     _refreshController.refreshCompleted();
   }
 
@@ -53,7 +60,7 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         appBar: MyAppBar(advController: advancedDrawerController),
         body: SmartRefresher(
-          onRefresh: loadPage,
+          onRefresh: _onRefresh,
           controller: _refreshController,
           enablePullDown: true,
           header: const WaterDropMaterialHeader(
@@ -149,6 +156,9 @@ class _HomeState extends State<Home> {
                     );
                   }
                   if (element.className == "swiper-container") {
+                    var icon =
+                        element.parent?.children[0].children[0].className;
+
                     var swipes = element.children.first.children;
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10),
@@ -170,6 +180,9 @@ class _HomeState extends State<Home> {
                             date: date,
                             href: href.toString(),
                             text: text,
+                            icon: icon == "fas fa-bullhorn"
+                                ? Icons.volume_down_sharp
+                                : Icons.calendar_today,
                           );
                         },
                         pagination: kotoPagination(),
@@ -245,197 +258,6 @@ class _HomeState extends State<Home> {
           ),
         );
       },
-    );
-  }
-}
-
-class SlideWithOutImage extends StatelessWidget {
-  final String text;
-  final String date;
-  final String desc;
-  final String href;
-  const SlideWithOutImage({
-    required this.text,
-    required this.date,
-    required this.desc,
-    required this.href,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.all(20.0),
-      width: double.infinity,
-      height: (MediaQuery.of(context).size.width / 16) * 11,
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 1,
-          color: Colors.grey,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            child: Column(
-              children: [
-                Text(
-                  text,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: mainColor,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 25,
-                      height: 2,
-                      color: mainColor,
-                    ),
-                    Container(
-                      width: 25,
-                      height: 2,
-                      color: Colors.grey,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 10,
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.calendar_today,
-                            color: Colors.grey,
-                            size: 16,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                            ),
-                            child: Text(date),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  desc,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          OutlinedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                mainColor,
-              ),
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewsDet(
-                    "http://koto.org.tr/${href.toString()}",
-                  ),
-                ),
-              );
-            },
-            child: const Text("Devamını Gör"),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SlideWithImage extends StatelessWidget {
-  const SlideWithImage({
-    Key? key,
-    required this.imgAttr,
-    required this.text,
-    this.href,
-  }) : super(key: key);
-
-  final LinkedHashMap<Object, String> imgAttr;
-  final String text;
-  final String? href;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewsDet(
-              "http://koto.org.tr/${href.toString()}",
-            ),
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          Image.network(
-            imgAttr['src'] != "" ? "http://koto.org.tr/${imgAttr['src']}" : "",
-            loadingBuilder: (context, img, event) {
-              if (event == null) return img;
-
-              return SizedBox(
-                height: (MediaQuery.of(context).size.width / 16) * 9,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    color: mainColor,
-                  ),
-                ),
-              );
-            },
-            height: (MediaQuery.of(context).size.width / 16) * 9,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            width: double.infinity,
-            height: (MediaQuery.of(context).size.width / 16) * 3,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                bottom: BorderSide(width: 5, color: Color(0xFF1F8281)),
-              ),
-            ),
-            child: Center(
-              child: Text(
-                text,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: mainColor,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

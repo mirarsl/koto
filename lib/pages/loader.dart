@@ -13,7 +13,7 @@ class Loader extends StatefulWidget {
 class _LoaderState extends State<Loader> {
   void goHome() async {
     await Future.delayed(const Duration(milliseconds: 1400));
-    Navigator.popAndPushNamed(context, '/home');
+    Navigator.popAndPushNamed(context, '/start');
   }
 
   @override
