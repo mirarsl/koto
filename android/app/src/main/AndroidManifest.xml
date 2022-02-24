@@ -23,7 +23,7 @@
         </intent>
     </queries>
    <application
-        android:label="koto"
+        android:label="KOTO"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
