@@ -3,6 +3,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:koto/const.dart';
+import 'package:koto/pages/accordion.dart';
 import 'package:koto/pages/councils.dart';
 import 'package:koto/pages/news_det.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -81,19 +82,20 @@ class _KotoBakis2State extends State<KotoBakis2> {
     "Yönetim Kurulu": {
       'icon': "images/koto-bakis/yonetim-kurulu.png",
       'navigate': () {
-        Get.to(() => const Councils('http://koto.org.tr/app_quality.php'));
+        Get.to(
+            () => const Councils('http://koto.org.tr/app_yonetim_kurulu.php'));
       },
     },
     "Meslek Komiteleri": {
       'icon': "images/koto-bakis/meslek-komiteleri.png",
       'navigate': () {
-        Get.to(() => const NewsDet('http://koto.org.tr/app_missionvision.php'));
+        Get.to(() => const Accordion('http://koto.org.tr/app_committees.php'));
       },
     },
     "İdari Kadro": {
       'icon': "images/koto-bakis/idari-kadro.png",
       'navigate': () {
-        Get.to(() => const Councils('http://koto.org.tr/app_isprogrami.php'));
+        Get.to(() => const Accordion('http://koto.org.tr/app_idari_kadro.php'));
       },
     },
   };

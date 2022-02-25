@@ -4,25 +4,27 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:interactiveviewer_gallery/hero_dialog_route.dart';
+import 'package:interactiveviewer_gallery/interactiveviewer_gallery.dart';
 import 'package:koto/models/accordion_title.dart';
 import 'package:koto/models/head_title.dart';
 import 'package:koto/models/section_title.dart';
-import 'package:koto/pages/news_det.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../Network.dart';
 import '../app_bar.dart';
 import '../bottom_bar.dart';
 import '../const.dart';
+import 'councils.dart';
 
-class Councils extends StatefulWidget {
+class Accordion extends StatefulWidget {
   final String href;
-  const Councils(this.href, {Key? key}) : super(key: key);
+  const Accordion(this.href, {Key? key}) : super(key: key);
   @override
-  _CouncilsState createState() => _CouncilsState();
+  _AccordionState createState() => _AccordionState();
 }
 
-class _CouncilsState extends State<Councils> {
+class _AccordionState extends State<Accordion> {
   dynamic pageData;
   Future<dynamic> loadPage() async {
     pageData = "";
@@ -80,21 +82,14 @@ class _CouncilsState extends State<Councils> {
             child: Padding(
               padding: const EdgeInsets.only(
                 top: 20,
-                left: 10,
-                right: 10,
+                left: 5,
+                right: 5,
                 bottom: 20,
               ),
               child: HtmlWidget(
                 pageData,
                 onTapImage: (image) {},
                 textStyle: const TextStyle(fontSize: 14.5, height: 1.25),
-                onTapUrl: (href) {
-                  if (!href.startsWith('http')) {
-                    href = "https://koto.org.tr/" + href;
-                  }
-                  launchURL(href);
-                  return true;
-                },
                 customStylesBuilder: (element) {
                   if (element.localName == "strong") {
                     return {'margin': '7px 0'};
@@ -104,40 +99,26 @@ class _CouncilsState extends State<Councils> {
                 customWidgetBuilder: (element) {
                   if (element.localName == 'h1') {
                     return HeadTitle(text: element.text);
+                  } else if (element.localName == "a") {
+                    var href = element.attributes['href'];
+                    var com = element.children.first.children.first.innerHtml;
+                    return AccordionTitle(
+                      text: com,
+                      onTap: () {
+                        Get.to(
+                          () => Councils(
+                            'http://koto.org.tr/$href',
+                          ),
+                        );
+                      },
+                    );
                   } else if (element.localName == 'h2' ||
                       element.localName == 'h3' ||
                       element.localName == 'h4' ||
                       element.localName == 'h5' ||
                       element.localName == 'h6') {
-                    return SectionTitle(text: element.text);
-                  } else if (element.className == "person-information") {
-                    var img =
-                        element.children.first.children.first.attributes['src'];
-                    var title = element.children[1].children[0].text;
-                    var name = element.children[1].children[1].text;
-                    var comp = element.children[1].children[2].text;
-                    var tel = element.children[1].children[3].text;
-                    var email = element.children[1].children[4].text;
-                    return SinglePerson(
-                      title: title,
-                      image: img,
-                      name: name,
-                      company: comp,
-                      tel: tel,
-                      email: email,
-                    );
-                  } else if (element.className == "announcement-item") {
-                    var href = element.children.first.attributes['href'];
-                    return AccordionTitle(
-                      text: element.children.first.children.first.children.first
-                          .children.first.text,
-                      onTap: () {
-                        Get.to(
-                          () => NewsDet(
-                            'http://koto.org.tr/$href',
-                          ),
-                        );
-                      },
+                    return SectionTitle(
+                      text: element.text,
                     );
                   }
                   return null;
@@ -176,8 +157,8 @@ class SinglePerson extends StatelessWidget {
       margin: const EdgeInsets.only(
         top: 20,
         bottom: 10,
-        left: 5,
-        right: 5,
+        left: 10,
+        right: 10,
       ),
       width: double.infinity / 2,
       child: Stack(
@@ -233,13 +214,13 @@ class SinglePerson extends StatelessWidget {
                               headers: {},
                             ),
                             height: 150,
-                            width: 110,
+                            width: 120,
                             fit: BoxFit.fitHeight,
                             loadingBuilder: (context, img, event) {
                               if (event == null) return img;
                               return const SizedBox(
                                 height: 150,
-                                width: 110,
+                                width: 150,
                                 child: Center(
                                   child: CircularProgressIndicator(
                                     color: mainColor,
@@ -249,7 +230,7 @@ class SinglePerson extends StatelessWidget {
                             },
                             errorBuilder: (context, exp, stack) {
                               return const SizedBox(
-                                width: 110,
+                                width: 120,
                                 height: 150,
                               );
                             },
@@ -257,7 +238,7 @@ class SinglePerson extends StatelessWidget {
                         ),
                       )
                     : const SizedBox(
-                        width: 110,
+                        width: 120,
                         height: 150,
                       ),
                 Container(
@@ -269,7 +250,7 @@ class SinglePerson extends StatelessWidget {
                         children: [
                           Container(
                             margin: const EdgeInsets.only(top: 10),
-                            width: MediaQuery.of(context).size.width - 180,
+                            width: MediaQuery.of(context).size.width - 170,
                             padding: const EdgeInsets.only(bottom: 5, top: 10),
                             decoration: const BoxDecoration(
                               border: Border(
@@ -312,7 +293,7 @@ class SinglePerson extends StatelessWidget {
                             height: 1.3,
                           ),
                         ),
-                        width: MediaQuery.of(context).size.width - 180,
+                        width: MediaQuery.of(context).size.width - 170,
                       ),
                       tel.isNotEmpty
                           ? SizedBox(
@@ -330,7 +311,7 @@ class SinglePerson extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width - 230,
+                                        MediaQuery.of(context).size.width - 220,
                                     child: Text(
                                       tel,
                                       style: const TextStyle(
@@ -341,7 +322,7 @@ class SinglePerson extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              width: MediaQuery.of(context).size.width - 180,
+                              width: MediaQuery.of(context).size.width - 170,
                             )
                           : const SizedBox(),
                       email.isNotEmpty
@@ -360,7 +341,7 @@ class SinglePerson extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     width:
-                                        MediaQuery.of(context).size.width - 230,
+                                        MediaQuery.of(context).size.width - 220,
                                     child: Text(
                                       email,
                                       style: const TextStyle(
@@ -371,7 +352,7 @@ class SinglePerson extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              width: MediaQuery.of(context).size.width - 180,
+                              width: MediaQuery.of(context).size.width - 170,
                             )
                           : const SizedBox(),
                     ],
@@ -407,6 +388,70 @@ class SinglePerson extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SingleSlide extends StatelessWidget {
+  const SingleSlide(
+      {Key? key,
+      required this.imgAttr,
+      required this.sourceList,
+      required this.id})
+      : super(key: key);
+
+  final String? imgAttr;
+  final List sourceList;
+  final int id;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          HeroDialogRoute<void>(
+            builder: (BuildContext context) => InteractiveviewerGallery(
+              sources: sourceList,
+              initIndex: sourceList.indexOf(id),
+              itemBuilder: (context, index, status) => Image.network(
+                "http://koto.org.tr/${sourceList[index]}",
+                fit: BoxFit.contain,
+                height: MediaQuery.of(context).size.width,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(mainColor),
+                      strokeWidth: 2,
+                      backgroundColor: mainColor,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+      child: Image.network(
+        imgAttr != "" ? "http://koto.org.tr/$imgAttr" : "",
+        loadingBuilder: (context, img, event) {
+          if (event == null) return img;
+
+          return SizedBox(
+            height: (MediaQuery.of(context).size.width / 16) * 9,
+            child: const Center(
+              child: CircularProgressIndicator(
+                color: mainColor,
+              ),
+            ),
+          );
+        },
+        height: (MediaQuery.of(context).size.width / 16) * 9,
+        width: MediaQuery.of(context).size.width,
+        fit: BoxFit.cover,
       ),
     );
   }

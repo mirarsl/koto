@@ -26,10 +26,13 @@ class NewsDet extends StatefulWidget {
 class _NewsDetState extends State<NewsDet> {
   dynamic pageData;
   Future<dynamic> loadPage() async {
-    print(widget.href);
     pageData = "";
-    var data = await Network().getPage(widget.href);
-    pageData = data;
+    try {
+      var data = await Network().getPage(widget.href);
+      pageData = data;
+    } catch (e) {
+      print(e);
+    }
     setState(() {});
   }
 
