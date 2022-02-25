@@ -26,6 +26,7 @@ class NewsDet extends StatefulWidget {
 class _NewsDetState extends State<NewsDet> {
   dynamic pageData;
   Future<dynamic> loadPage() async {
+    print(widget.href);
     pageData = "";
     var data = await Network().getPage(widget.href);
     pageData = data;
@@ -144,6 +145,65 @@ class _NewsDetState extends State<NewsDet> {
                             swipes.length > 1 ? kotoSliderArrow() : null,
                         controller: swiperController,
                         loop: swipes.length > 1 ? true : false,
+                      ),
+                    );
+                  } else if (element.localName == "img") {
+                    String? imgSrc = element.attributes['src'];
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            HeroDialogRoute<void>(
+                              builder: (BuildContext context) =>
+                                  InteractiveviewerGallery(
+                                sources: [imgSrc],
+                                initIndex: 0,
+                                itemBuilder: (context, index, status) =>
+                                    Image.network(
+                                  imgSrc!.startsWith('http')
+                                      ? imgSrc
+                                      : 'http://koto.org.tr/$imgSrc',
+                                  fit: BoxFit.contain,
+                                  height: MediaQuery.of(context).size.width,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    }
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation(mainColor),
+                                        strokeWidth: 2,
+                                        backgroundColor: mainColor,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Image.network(
+                          imgSrc!.startsWith('http')
+                              ? imgSrc
+                              : 'http://koto.org.tr/$imgSrc',
+                          loadingBuilder: (context, img, event) {
+                            if (event == null) return img;
+
+                            return SizedBox(
+                              height:
+                                  (MediaQuery.of(context).size.width / 16) * 9,
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  color: mainColor,
+                                ),
+                              ),
+                            );
+                          },
+                          width: MediaQuery.of(context).size.width,
+                        ),
                       ),
                     );
                   }

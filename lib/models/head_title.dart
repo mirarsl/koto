@@ -14,6 +14,7 @@ class HeadTitle extends StatelessWidget {
     return Stack(
       children: [
         Container(
+          width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.only(bottom: 10),
           decoration: const BoxDecoration(
             border: Border(

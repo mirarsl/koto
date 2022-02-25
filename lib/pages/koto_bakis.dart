@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:koto/const.dart';
+import 'package:koto/pages/news_det.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../app_bar.dart';
@@ -32,36 +35,80 @@ class _KotoBakisState extends State<KotoBakis> {
     "Oda Hakkında": {
       'icon':
           "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_about_us.php'));
+      },
     },
     "Oda Politikaları": {
       'icon':
           "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_quality.php'));
+      },
     },
     "Misyonumuz ve Vizyonumuz": {
       'icon':
           "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
       // 'icon': "images/koto-bakis/misyon-vizyon.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_missionvision.php'));
+      },
     },
     "İş Programı 2019": {
       'icon':
           "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
       // 'icon': "images/koto-bakis/is-programi.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_isprogrami.php'));
+      },
     },
     "Stratejik Plan": {
       'icon':
           "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
       // 'icon': "images/koto-bakis/stratejik-plan.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_strategy_plan.php'));
+      },
     },
     "Çalışma Raporu": {
       'icon':
           "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
       // 'icon': "images/koto-bakis/calisma-raporu.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_work_report.php'));
+      },
+    },
+  };
+  Map<String, Map<String, dynamic>> organizasyon = {
+    "Meclis": {
+      'icon':
+          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_about_us.php'));
+      },
+    },
+    "Yönetim Kurulu": {
+      'icon':
+          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_quality.php'));
+      },
+    },
+    "Meslek Komiteleri": {
+      'icon':
+          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      // 'icon': "images/koto-bakis/misyon-vizyon.png",
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_missionvision.php'));
+      },
+    },
+    "İdari Kadro": {
+      'icon':
+          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      // 'icon': "images/koto-bakis/is-programi.png",
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_isprogrami.php'));
+      },
     },
   };
 
@@ -99,9 +146,38 @@ class _KotoBakisState extends State<KotoBakis> {
             backgroundColor: mainColor,
           ),
           child: SafeArea(
-            child: ListView.builder(
-              itemCount: _kurumsalList.length,
-              itemBuilder: (el, ind) => _kurumsalList[ind],
+            child: ListView(
+              children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(top: 30, bottom: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: const Text(
+                        "Kurumsal",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: mainColor,
+                        ),
+                      ),
+                    ),
+                  ] +
+                  _kurumsalList.map((e) => e).toList() +
+                  <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(top: 30, bottom: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: const Text(
+                        "Organizasyon",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: mainColor,
+                        ),
+                      ),
+                    ),
+                  ],
             ),
           ),
         ),

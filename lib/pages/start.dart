@@ -3,13 +3,13 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
 import 'package:koto/const.dart';
 import 'package:koto/pages/home.dart';
-import 'package:koto/pages/koto_bakis.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_bar.dart';
 import '../bottom_bar.dart';
+import 'koto_bakis2.dart';
 
 class Start extends StatefulWidget {
   const Start({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class _StartState extends State<Start> {
     "Koto'ya Bakış": {
       'icon': "images/icons/kotoya-bakis.png",
       'navigate': () {
-        Get.to(() => const KotoBakis());
+        Get.to(() => const KotoBakis2());
       },
     },
     "Haberler Duyurular Etkinliker": {
