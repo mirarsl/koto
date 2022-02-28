@@ -5,7 +5,9 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:koto/const.dart';
 import 'package:koto/pages/accordion.dart';
 import 'package:koto/pages/councils.dart';
+import 'package:koto/pages/list.dart';
 import 'package:koto/pages/news_det.dart';
+import 'package:koto/pages/video_list.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../app_bar.dart';
@@ -100,11 +102,52 @@ class _KotoBakis2State extends State<KotoBakis2> {
     },
   };
 
+  Map<String, Map<String, dynamic>> kotoDinamik = {
+    "Haberler": {
+      'icon': "images/koto-bakis/haberler.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_news.php'));
+      },
+    },
+    "Duyurular": {
+      'icon': "images/koto-bakis/duyurular.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_ann.php'));
+      },
+    },
+    "Etkinlikler": {
+      'icon': "images/koto-bakis/etkinlikler.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_evn.php'));
+      },
+    },
+    "Komite Çalışmaları": {
+      'icon': "images/koto-bakis/komite-calismalari.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_khd.php'));
+      },
+    },
+    "Foto Galeri": {
+      'icon': "images/koto-bakis/foto-galeri.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_foto.php'));
+      },
+    },
+    "Video Galeri": {
+      'icon': "images/koto-bakis/video-galeri.png",
+      'navigate': () {
+        Get.to(() => const VideoList('http://koto.org.tr/app_video.php'));
+      },
+    },
+  };
+
   List<Widget> _kurumsalList = [];
   List<Widget> _organizationList = [];
+  List<Widget> _dinamikList = [];
   void generateList() async {
     _kurumsalList = [];
     _organizationList = [];
+    _dinamikList = [];
 
     for (var element in kurumsal.entries) {
       _kurumsalList.add(
@@ -117,6 +160,15 @@ class _KotoBakis2State extends State<KotoBakis2> {
     }
     for (var element in organizasyon.entries) {
       _organizationList.add(
+        SinglePage(
+          text: element.key,
+          icon: element.value["icon"],
+          onTap: element.value["navigate"],
+        ),
+      );
+    }
+    for (var element in kotoDinamik.entries) {
+      _dinamikList.add(
         SinglePage(
           text: element.key,
           icon: element.value["icon"],
@@ -172,6 +224,20 @@ class _KotoBakis2State extends State<KotoBakis2> {
                     crossAxisCount: 3,
                     shrinkWrap: true,
                     children: _organizationList.map((e) => e).toList(),
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                ),
+                const KurumsalTitle(
+                  text: 'Koto Dinamik',
+                  image:
+                      'http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png',
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 5, bottom: 30),
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    children: _dinamikList.map((e) => e).toList(),
                     physics: const NeverScrollableScrollPhysics(),
                   ),
                 ),
