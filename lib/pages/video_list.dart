@@ -5,6 +5,8 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:interactiveviewer_gallery/hero_dialog_route.dart';
+import 'package:interactiveviewer_gallery/interactiveviewer_gallery.dart';
 import 'package:koto/models/head_title.dart';
 import 'package:koto/models/section_title.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -279,20 +281,20 @@ class _VideoListState extends State<VideoList> {
   }
 
   Future<dynamic> videoBottomSheet(BuildContext context, String? videoLink) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (e) {
-        String? id = YoutubePlayer.convertUrlToId(videoLink!);
-        YoutubePlayerController _controller;
-        _controller = YoutubePlayerController(
-          initialVideoId: id!,
-          flags: const YoutubePlayerFlags(
-            autoPlay: true,
-          ),
-        );
-        return Container(
-          height: MediaQuery.of(context).size.height - 120,
-          child: YoutubePlayer(
+    String? id = YoutubePlayer.convertUrlToId(videoLink!);
+    YoutubePlayerController _controller;
+    _controller = YoutubePlayerController(
+      initialVideoId: id!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+      ),
+    );
+    return Navigator.of(context).push(
+      HeroDialogRoute<void>(
+        builder: (BuildContext context) => InteractiveviewerGallery(
+          sources: [videoLink],
+          initIndex: 0,
+          itemBuilder: (context, index, status) => YoutubePlayer(
             width: MediaQuery.of(context).size.width,
             controller: _controller,
             aspectRatio: 16 / 9,
@@ -302,9 +304,8 @@ class _VideoListState extends State<VideoList> {
               handleColor: mainColor,
             ),
           ),
-        );
-      },
-      isScrollControlled: true,
+        ),
+      ),
     );
   }
 
