@@ -109,12 +109,17 @@ class _ListDetState extends State<ListDet> {
                   if (element.localName == 'h1') {
                     return HeadTitle(text: element.text);
                   } else if (element.localName == 'h2' ||
-                      element.localName == 'h3') {
-                    return SectionTitle(text: element.text);
-                  } else if (element.localName == 'h4' ||
+                      element.localName == 'h3' ||
+                      element.localName == 'h4' ||
                       element.localName == 'h5' ||
                       element.localName == 'h6') {
-                    return DocTitle(text: element.text);
+                    return SectionTitle(text: element.text);
+                  } else if (element.className == 'document') {
+                    String? href = element.attributes['href'];
+                    return DocTitle(
+                      text: element.text,
+                      href: href!,
+                    );
                   } else if (element.localName == "img") {
                     String? imgSrc = element.attributes['src'];
                     return Container(

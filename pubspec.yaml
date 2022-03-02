@@ -25,6 +25,8 @@ dependencies:
   shared_preferences: ^2.0.13
   get: ^4.6.1
   youtube_player_flutter: ^8.0.0
+  flutter_expandable_table: ^1.0.2
+  syncfusion_flutter_calendar: ^19.4.54
 
 dev_dependencies:
   flutter_test:

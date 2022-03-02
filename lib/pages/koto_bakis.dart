@@ -3,7 +3,11 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:koto/const.dart';
+import 'package:koto/pages/accordion.dart';
+import 'package:koto/pages/councils.dart';
+import 'package:koto/pages/list.dart';
 import 'package:koto/pages/news_det.dart';
+import 'package:koto/pages/video_list.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../app_bar.dart';
@@ -33,46 +37,37 @@ class _KotoBakisState extends State<KotoBakis> {
 
   Map<String, Map<String, dynamic>> kurumsal = {
     "Oda Hakkında": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'icon': "images/koto-bakis/oda-hakkinda.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_about_us.php'));
       },
     },
     "Oda Politikaları": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'icon': "images/koto-bakis/oda-politikalari.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_quality.php'));
       },
     },
     "Misyonumuz ve Vizyonumuz": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      // 'icon': "images/koto-bakis/misyon-vizyon.png",
+      'icon': "images/koto-bakis/misyon-vizyon.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_missionvision.php'));
       },
     },
     "İş Programı 2019": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      // 'icon': "images/koto-bakis/is-programi.png",
+      'icon': "images/koto-bakis/is-programi.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_isprogrami.php'));
       },
     },
     "Stratejik Plan": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      // 'icon': "images/koto-bakis/stratejik-plan.png",
+      'icon': "images/koto-bakis/stratejik-plan.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_strategy_plan.php'));
       },
     },
     "Çalışma Raporu": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'icon': "images/koto-bakis/calisma-raporu.png",
       // 'icon': "images/koto-bakis/calisma-raporu.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_work_report.php'));
@@ -81,44 +76,100 @@ class _KotoBakisState extends State<KotoBakis> {
   };
   Map<String, Map<String, dynamic>> organizasyon = {
     "Meclis": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'icon': "images/koto-bakis/meclis.png",
       'navigate': () {
-        Get.to(() => const NewsDet('http://koto.org.tr/app_about_us.php'));
+        Get.to(() => const Councils('http://koto.org.tr/app_konsey.php'));
       },
     },
     "Yönetim Kurulu": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
+      'icon': "images/koto-bakis/yonetim-kurulu.png",
       'navigate': () {
-        Get.to(() => const NewsDet('http://koto.org.tr/app_quality.php'));
+        Get.to(
+            () => const Councils('http://koto.org.tr/app_yonetim_kurulu.php'));
       },
     },
     "Meslek Komiteleri": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      // 'icon': "images/koto-bakis/misyon-vizyon.png",
+      'icon': "images/koto-bakis/meslek-komiteleri.png",
       'navigate': () {
-        Get.to(() => const NewsDet('http://koto.org.tr/app_missionvision.php'));
+        Get.to(() => const Accordion('http://koto.org.tr/app_committees.php'));
       },
     },
     "İdari Kadro": {
-      'icon':
-          "http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png",
-      // 'icon': "images/koto-bakis/is-programi.png",
+      'icon': "images/koto-bakis/idari-kadro.png",
       'navigate': () {
-        Get.to(() => const NewsDet('http://koto.org.tr/app_isprogrami.php'));
+        Get.to(() => const Accordion('http://koto.org.tr/app_idari_kadro.php'));
+      },
+    },
+  };
+
+  Map<String, Map<String, dynamic>> kotoDinamik = {
+    "Haberler": {
+      'icon': "images/koto-bakis/haberler.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_news.php'));
+      },
+    },
+    "Duyurular": {
+      'icon': "images/koto-bakis/duyurular.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_ann.php'));
+      },
+    },
+    "Etkinlikler": {
+      'icon': "images/koto-bakis/etkinlikler.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_evn.php'));
+      },
+    },
+    "Komite Çalışmaları": {
+      'icon': "images/koto-bakis/komite-calismalari.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_khd.php'));
+      },
+    },
+    "Foto Galeri": {
+      'icon': "images/koto-bakis/foto-galeri.png",
+      'navigate': () {
+        Get.to(() => const ListDet('http://koto.org.tr/app_foto.php'));
+      },
+    },
+    "Video Galeri": {
+      'icon': "images/koto-bakis/video-galeri.png",
+      'navigate': () {
+        Get.to(() => const VideoList('http://koto.org.tr/app_video.php'));
       },
     },
   };
 
   List<Widget> _kurumsalList = [];
+  List<Widget> _organizationList = [];
+  List<Widget> _dinamikList = [];
   void generateList() async {
     _kurumsalList = [];
+    _organizationList = [];
+    _dinamikList = [];
 
     for (var element in kurumsal.entries) {
       _kurumsalList.add(
-        KurumsalItem(
+        SinglePage(
+          text: element.key,
+          icon: element.value["icon"],
+          onTap: element.value["navigate"],
+        ),
+      );
+    }
+    for (var element in organizasyon.entries) {
+      _organizationList.add(
+        SinglePage(
+          text: element.key,
+          icon: element.value["icon"],
+          onTap: element.value["navigate"],
+        ),
+      );
+    }
+    for (var element in kotoDinamik.entries) {
+      _dinamikList.add(
+        SinglePage(
           text: element.key,
           icon: element.value["icon"],
           onTap: element.value["navigate"],
@@ -148,36 +199,49 @@ class _KotoBakisState extends State<KotoBakis> {
           child: SafeArea(
             child: ListView(
               children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(top: 30, bottom: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: const Text(
-                        "Kurumsal",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: mainColor,
-                        ),
-                      ),
-                    ),
-                  ] +
-                  _kurumsalList.map((e) => e).toList() +
-                  <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(top: 30, bottom: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: const Text(
-                        "Organizasyon",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: mainColor,
-                        ),
-                      ),
-                    ),
-                  ],
+                const KurumsalTitle(
+                  text: 'Kurumsal',
+                  image:
+                      'http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png',
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 5, bottom: 30),
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    children: _kurumsalList.map((e) => e).toList(),
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                ),
+                const KurumsalTitle(
+                  text: 'Organizasyon',
+                  image:
+                      'http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png',
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 5, bottom: 30),
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    children: _organizationList.map((e) => e).toList(),
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                ),
+                const KurumsalTitle(
+                  text: 'Koto Dinamik',
+                  image:
+                      'http://koto.org.tr/images/upload/9832d0735e58d7637047fb2c795f0b48.png',
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 5, bottom: 30),
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    children: _dinamikList.map((e) => e).toList(),
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -187,8 +251,8 @@ class _KotoBakisState extends State<KotoBakis> {
   }
 }
 
-class KurumsalItem extends StatelessWidget {
-  const KurumsalItem({
+class SinglePage extends StatelessWidget {
+  const SinglePage({
     required this.text,
     required this.icon,
     required this.onTap,
@@ -198,6 +262,73 @@ class KurumsalItem extends StatelessWidget {
   final String text;
   final String icon;
   final dynamic onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 140,
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+      width: MediaQuery.of(context).size.width / 3 - 20,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 5,
+            blurRadius: 10,
+            color: Color(0x10000000),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        child: MaterialButton(
+          onPressed: () {
+            if (onTap() == Route) {
+              Navigator.push(context, onTap());
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.asset(
+                    icon,
+                    height: 45,
+                  ),
+                ),
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    decoration: TextDecoration.none,
+                    fontSize: 12,
+                    color: mainColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class KurumsalTitle extends StatelessWidget {
+  const KurumsalTitle({
+    required this.text,
+    required this.image,
+    Key? key,
+  }) : super(key: key);
+
+  final String text;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -215,50 +346,56 @@ class KurumsalItem extends StatelessWidget {
           ),
         ],
       ),
-      child: MaterialButton(
-        padding: EdgeInsets.zero,
-        onPressed: () {
-          onTap();
-        },
-        child: Stack(
-          children: [
-            Image.network(
-              icon,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-            Align(
-              alignment: const Alignment(1, .9),
-              child: Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(1),
-                    ),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        spreadRadius: 0,
-                        blurRadius: 10,
-                        color: Color(0x20000000),
-                      ),
-                    ]),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    decoration: TextDecoration.none,
-                    fontSize: 14,
+      child: Stack(
+        children: [
+          Image.network(
+            image,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, img, event) {
+              if (event == null) return img;
+
+              return const SizedBox(
+                height: 140,
+                width: double.infinity,
+                child: Center(
+                  child: CircularProgressIndicator(
                     color: mainColor,
-                    fontWeight: FontWeight.w600,
                   ),
+                ),
+              );
+            },
+          ),
+          Align(
+            alignment: const Alignment(1, .9),
+            child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(1),
+                  ),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      spreadRadius: 0,
+                      blurRadius: 10,
+                      color: Color(0x20000000),
+                    ),
+                  ]),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  decoration: TextDecoration.none,
+                  fontSize: 14,
+                  color: mainColor,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

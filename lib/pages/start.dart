@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
 import 'package:koto/const.dart';
+import 'package:koto/pages/belge-tescil.dart';
+import 'package:koto/pages/bilgi-bankasi.dart';
 import 'package:koto/pages/home.dart';
+import 'package:koto/pages/news_det.dart';
+import 'package:koto/pages/ticaret-noktasi.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_bar.dart';
 import '../bottom_bar.dart';
-import 'koto_bakis2.dart';
+import 'koto_bakis.dart';
 
 class Start extends StatefulWidget {
   const Start({Key? key}) : super(key: key);
@@ -43,7 +47,7 @@ class _StartState extends State<Start> {
     "Koto'ya Bakış": {
       'icon': "images/icons/kotoya-bakis.png",
       'navigate': () {
-        Get.to(() => const KotoBakis2());
+        Get.to(() => const KotoBakis());
       },
     },
     "Haberler Duyurular Etkinliker": {
@@ -54,35 +58,52 @@ class _StartState extends State<Start> {
     },
     "Aidat Ödeme": {
       'icon': "images/icons/aidat-odeme.png",
-      'navigate': () {},
+      'navigate': () {
+        launchURL('https://uye.tobb.org.tr/hizliaidatodeme.jsp');
+      },
     },
     "Belge Alma": {
       'icon': "images/icons/belge-alma.png",
-      'navigate': () {},
+      'navigate': () {
+        launchURL('https://uye.tobb.org.tr/organizasyon/firma-index.jsp');
+      },
     },
     "Belge ve Tescil": {
       'icon': "images/icons/belge-tescil.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const BelgeTescil());
+      },
     },
     "Ticaret Noktası": {
       'icon': "images/icons/ticaret-noktasi.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const TicaretNoktasi());
+      },
     },
     "Bilgi Bankası": {
       'icon': "images/icons/bilgi-bankasi.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const BilgiBankasi());
+      },
     },
     "İhale İşbirliği": {
       'icon': "images/icons/ihale-isbirligi.png",
-      'navigate': () {},
+      'navigate': () {
+        launchURL('https://www.tobb2b.org.tr/');
+      },
     },
     "Koto Kent": {
       'icon': "images/icons/kotokent.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet('http://koto.org.tr/app_koto_kent.php'));
+      },
     },
     "İhracat Destek Ofisi": {
       'icon': "images/icons/ihracat-destek-ofisi.png",
-      'navigate': () {},
+      'navigate': () {
+        Get.to(() => const NewsDet(
+            'http://koto.org.tr/app_ticaret_noktasi_det.php?id=4'));
+      },
     },
     "Kotev": {
       'icon': "images/icons/kotev.png",
