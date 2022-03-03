@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:koto/models/meeting_data_source.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../const.dart';
-import 'news_det.dart';
+import '../pages/news_det.dart';
 
 class EventCalendar extends StatefulWidget {
   final List source;
@@ -144,53 +145,4 @@ class _EventCalendarState extends State<EventCalendar> {
       ),
     );
   }
-}
-
-class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].to;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].eventName;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return appointments![index].isAllDay;
-  }
-}
-
-class Meeting {
-  Meeting(
-    this.eventName,
-    this.from,
-    this.to,
-    this.background,
-    this.isAllDay,
-    this.id,
-  );
-
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
-  String id;
 }

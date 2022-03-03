@@ -26,7 +26,7 @@ class AdvDrawer extends StatelessWidget {
                 bottom: 64.0,
               ),
               clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black26,
                 shape: BoxShape.circle,
               ),
@@ -36,27 +36,17 @@ class AdvDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.account_circle_rounded),
+              title: const Text('Profil'),
             ),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.account_circle_rounded),
-              title: Text('Profile'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Ayarlar'),
             ),
-            ListTile(
-              onTap: () {},
-              leading: Icon(Icons.favorite),
-              title: Text('Favourites'),
-            ),
-            ListTile(
-              onTap: () {},
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-            ),
-            Spacer(),
+            const Spacer(),
             DefaultTextStyle(
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 color: Colors.white54,
               ),
@@ -64,7 +54,29 @@ class AdvDrawer extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(
                   vertical: 16.0,
                 ),
-                child: Text('Terms of Service | Privacy Policy'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Kullanım Şartları',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "Gizlilik Politikası",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

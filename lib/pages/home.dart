@@ -5,13 +5,14 @@ import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:koto/Network.dart';
 import 'package:koto/const.dart';
+import 'package:koto/models/koto_pagination.dart';
+import 'package:koto/models/koto_slider_arrow.dart';
 import 'package:koto/models/slide_with_image.dart';
 import 'package:koto/models/slide_without_image.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../app_bar.dart';
 import '../bottom_bar.dart';
-import '../swiper_button.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -72,6 +73,13 @@ class _HomeState extends State<Home> {
               padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
               child: HtmlWidget(
                 pageData,
+                onLoadingBuilder: (context, element, status) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: mainColor,
+                    ),
+                  );
+                },
                 customWidgetBuilder: (element) {
                   if (element.id == "main-slider") {
                     var swipes = element.children.first.children;
@@ -113,7 +121,7 @@ class _HomeState extends State<Home> {
                           );
                         },
                         itemCount: swipes.length,
-                        pagination: kotoSliderArrow(),
+                        pagination: kotoSliderArrow(swiperController),
                         controller: swiperController,
                       ),
                     );
@@ -198,66 +206,6 @@ class _HomeState extends State<Home> {
         ),
         bottomNavigationBar: const BottomBar(cIndex: 0),
       ),
-    );
-  }
-
-  SwiperPagination kotoSliderArrow() {
-    return SwiperPagination(
-      builder: SwiperCustomPagination(
-          builder: (BuildContext context, SwiperPluginConfig config) {
-        return Stack(
-          fit: StackFit.expand,
-          children: [
-            Align(
-              alignment: const Alignment(-1, 0),
-              child: SwiperButton(
-                onPress: () {
-                  swiperController.previous();
-                },
-                painterType: LeftPainter(),
-                icon: Icons.chevron_left,
-              ),
-            ),
-            Align(
-              alignment: const Alignment(1, 0),
-              child: SwiperButton(
-                painterType: RightPainter(),
-                icon: Icons.chevron_right,
-                onPress: () {
-                  swiperController.next();
-                },
-              ),
-            ),
-          ],
-        );
-      }),
-    );
-  }
-
-  SwiperCustomPagination kotoPagination() {
-    return SwiperCustomPagination(
-      builder: (BuildContext context, SwiperPluginConfig config) {
-        return Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: Iterable.generate(
-                config.itemCount,
-                (i) => Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 2,
-                  ),
-                  width: 20,
-                  height: 5,
-                  color: config.activeIndex == i ? mainColor : Colors.grey,
-                ),
-              ).toList(),
-            ),
-          ),
-        );
-      },
     );
   }
 }

@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.yasagames.koto.koto"
+        applicationId "com.yasagames.koto"
         minSdkVersion 20
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

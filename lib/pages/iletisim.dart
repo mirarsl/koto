@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
@@ -9,11 +8,8 @@ import 'package:interactiveviewer_gallery/hero_dialog_route.dart';
 import 'package:interactiveviewer_gallery/interactiveviewer_gallery.dart';
 import 'package:koto/models/doc_title.dart';
 import 'package:koto/models/head_title.dart';
-import 'package:koto/models/koto_pagination.dart';
+import 'package:koto/models/html_table.dart';
 import 'package:koto/models/section_title.dart';
-import 'package:koto/models/single_news.dart';
-import 'package:koto/models/slide_without_image.dart';
-import 'package:koto/pages/news_det.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../Network.dart';
@@ -21,14 +17,14 @@ import '../app_bar.dart';
 import '../bottom_bar.dart';
 import '../const.dart';
 
-class ListDet extends StatefulWidget {
+class Iletisim extends StatefulWidget {
   final String href;
-  const ListDet(this.href, {Key? key}) : super(key: key);
+  const Iletisim(this.href, {Key? key}) : super(key: key);
   @override
-  _ListDetState createState() => _ListDetState();
+  _IletisimState createState() => _IletisimState();
 }
 
-class _ListDetState extends State<ListDet> {
+class _IletisimState extends State<Iletisim> {
   dynamic pageData;
   Future<dynamic> loadPage() async {
     pageData = "";
@@ -40,6 +36,8 @@ class _ListDetState extends State<ListDet> {
     }
     setState(() {});
   }
+
+  double tableHeight = Get.height - 40;
 
   @override
   void initState() {
@@ -93,6 +91,14 @@ class _ListDetState extends State<ListDet> {
               child: HtmlWidget(
                 pageData,
                 onTapImage: (image) {},
+                textStyle: const TextStyle(fontSize: 14.5, height: 1.25),
+                onTapUrl: (href) {
+                  if (!href.startsWith('http')) {
+                    href = "https://koto.org.tr/" + href;
+                  }
+                  launchURL(href);
+                  return true;
+                },
                 onLoadingBuilder: (context, element, status) {
                   return const Center(
                     child: CircularProgressIndicator(
@@ -100,15 +106,14 @@ class _ListDetState extends State<ListDet> {
                     ),
                   );
                 },
-                textStyle: const TextStyle(fontSize: 14.5, height: 1.25),
-                customStylesBuilder: (element) {
-                  if (element.localName == "strong") {
-                    return {'margin': '7px 0'};
-                  }
-                  return null;
-                },
                 customWidgetBuilder: (element) {
-                  if (element.localName == 'h1') {
+                  if (element.className == 'document') {
+                    String? href = element.attributes['href'];
+                    return DocTitle(
+                      text: element.text,
+                      href: href!,
+                    );
+                  } else if (element.localName == 'h1') {
                     return HeadTitle(text: element.text);
                   } else if (element.localName == 'h2' ||
                       element.localName == 'h3' ||
@@ -116,11 +121,27 @@ class _ListDetState extends State<ListDet> {
                       element.localName == 'h5' ||
                       element.localName == 'h6') {
                     return SectionTitle(text: element.text);
-                  } else if (element.className == 'document') {
+                  } else if (element.className == "btn") {
+                    String text = element.text;
                     String? href = element.attributes['href'];
-                    return DocTitle(
-                      text: element.text,
-                      href: href!,
+                    return TextButton(
+                      onPressed: () {
+                        if (href!.isNotEmpty) {
+                          launchURL(href);
+                        }
+                      },
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          text,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(mainColor),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                      ),
                     );
                   } else if (element.localName == "img") {
                     String? imgSrc = element.attributes['src'];
@@ -181,114 +202,29 @@ class _ListDetState extends State<ListDet> {
                         ),
                       ),
                     );
-                  } else if (element.className == "announcement-item mb-4") {
-                    var title =
-                        element.children[1].children.first.children.first.text;
-                    var link = element.children[0].attributes['href'];
-                    var date =
-                        element.children[1].children.first.children[1].text;
-                    // print(title);
-                    return SingleNews(
-                      text: title,
-                      onTap: () {
-                        if (link!.isNotEmpty) {
-                          Get.to(() => NewsDet("http://koto.org.tr/$link"));
-                        }
-                      },
-                      date: date,
-                    );
-                  } else if (element.className == "pagination-nav") {
-                    var pages = element.children.first.children;
-
-                    return Container(
-                      height: 50,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: pages.map(
-                          (e) {
-                            bool isActive = e.children.first.className ==
-                                "page-link active-page";
-                            var href = e.children.first.attributes['href'];
-                            return MaterialButton(
-                              minWidth: 40,
-                              height: 40,
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Get.to(
-                                    () => ListDet('http://koto.org.tr/$href'));
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  border: !isActive
-                                      ? Border.all(color: Colors.white)
-                                      : Border.all(color: mainColor),
-                                  color: !isActive ? Colors.white : mainColor,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(50),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 0,
-                                      blurRadius: 5,
-                                      color: Colors.black.withOpacity(.3),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    e.text,
-                                    style: TextStyle(
-                                      color: !isActive
-                                          ? Colors.black
-                                          : Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ).toList(),
-                      ),
-                    );
-                  } else if (element.id == "announcement-slider") {
-                    var swipes = element.children.first.children;
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      height: (MediaQuery.of(context).size.width / 16) * 12,
-                      width: MediaQuery.of(context).size.width,
-                      child: Swiper(
-                        autoplay: true,
-                        autoplayDelay: 3000,
-                        itemBuilder: (BuildContext context, int index) {
-                          var desc = swipes[index].children[2].text;
-                          var date = swipes[index].children[1].text;
-                          String? href =
-                              swipes[index].children[0].attributes["href"];
-                          var icon =
-                              'swipes[index].children[3].children[0].className';
-                          var text =
-                              swipes[index].children.first.children.first.text;
-                          return SlideWithOutImage(
-                            desc: desc,
-                            date: date,
-                            href: href.toString(),
-                            text: text,
-                            icon: icon == "fas fa-bullhorn"
-                                ? Icons.volume_down_sharp
-                                : Icons.calendar_today,
-                          );
-                        },
-                        pagination: kotoPagination(),
-                        itemCount: swipes.length,
-                      ),
-                    );
+                  } else if (element.localName == "table") {
+                    var heads = [], rows = [];
+                    for (var data in element.children) {
+                      if (data.localName == "thead") {
+                        heads = data.children.first.children;
+                      } else if (data.localName == "tbody") {
+                        rows = data.children;
+                      }
+                    }
+                    if (rows.length < 6) {
+                      tableHeight = (rows.length * 100) + 60;
+                    } else {
+                      tableHeight = Get.height - 250;
+                    }
+                    if (heads.isNotEmpty &&
+                        rows.isNotEmpty &&
+                        heads.length == rows[0].children.length) {
+                      return MyHtmlTable(
+                        tableHeight: tableHeight,
+                        heads: heads,
+                        rows: rows,
+                      );
+                    }
                   }
                   return null;
                 },
