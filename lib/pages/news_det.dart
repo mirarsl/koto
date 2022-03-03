@@ -249,8 +249,6 @@ class _NewsDetState extends State<NewsDet> {
                     } else {
                       tableHeight = Get.height - 250;
                     }
-                    print(heads);
-                    print(rows);
                     if (heads.isNotEmpty) {
                       return MyHtmlTable(
                         tableHeight: tableHeight,

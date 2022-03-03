@@ -1,4 +1,4 @@
-package com.yasagames.koto.koto
+package com.yasagames.koto
 
 import io.flutter.embedding.android.FlutterActivity
 

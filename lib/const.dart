@@ -8,3 +8,5 @@ const loaderIndicator = CircularProgressIndicator(color: Colors.white);
 void launchURL(_url) async {
   await launch(_url);
 }
+
+const appcastURL = 'http://koto.org.tr/app_cast.xml';

@@ -8,6 +8,7 @@ import 'package:koto/pages/bilgi-bankasi.dart';
 import 'package:koto/pages/home.dart';
 import 'package:koto/pages/news_det.dart';
 import 'package:koto/pages/ticaret-noktasi.dart';
+import 'package:new_version/new_version.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,8 +30,21 @@ class _StartState extends State<Start> {
     setState(() {});
   }
 
+  final newVersion = NewVersion(
+    forceAppVersion: '1.0.1',
+  );
+
   @override
   void initState() {
+    newVersion.showAlertIfNecessary(context: context);
+    // newVersion.showUpdateDialog(
+    //   context: context,
+    //   versionStatus: versionStatus!,
+    //   dialogTitle: 'Güncelleme Mevcut',
+    //   dialogText: 'Uygulamanız güncel değil. Lütfen güncelleme yapınız.',
+    //   updateButtonText: 'Şimdi Güncelle',
+    //   dismissButtonText: 'Sonra',
+    // );
     loadPage();
     super.initState();
   }

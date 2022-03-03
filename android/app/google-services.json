@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "999181122189",
+    "project_id": "koto-232818",
+    "storage_bucket": "koto-232818.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999181122189:android:de834844f5c4d95ed2c0c4",
+        "android_client_info": {
+          "package_name": "com.yasagames.koto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999181122189-hvq90b3l2kgnsvht3kp70dih8k8bgmrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2LoEBXj7YNf_eFzxtXmTLjzNhcXQYWgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999181122189-hvq90b3l2kgnsvht3kp70dih8k8bgmrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

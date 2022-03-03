@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:get/get.dart';
 import 'package:koto/const.dart';
+import 'package:koto/pages/news_det.dart';
+import 'package:koto/pages/start.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,14 +38,41 @@ class AdvDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.account_circle_rounded),
-              title: const Text('Profil'),
+              onTap: () {
+                Get.offAll(const Start());
+              },
+              leading: const Icon(Icons.home),
+              title: const Text('Anasayfa'),
+            ),
+            ListTile(
+              onTap: () {
+                Get.offAll(const Start());
+                Get.to(
+                  () => const NewsDet(
+                    'http://koto.org.tr/app_iletisim.php',
+                    barIndex: 3,
+                  ),
+                );
+              },
+              leading: const Icon(Icons.phone),
+              title: const Text('İletişim'),
             ),
             ListTile(
               onTap: () {},
               leading: const Icon(Icons.settings),
               title: const Text('Ayarlar'),
+            ),
+            ListTile(
+              onTap: () {
+                Get.offAll(const Start());
+                Get.to(
+                  () => const NewsDet(
+                    'http://koto.org.tr/app_bilgi_bankasi_det.php?id=2',
+                  ),
+                );
+              },
+              leading: const Icon(LineIcons.pollH),
+              title: const Text('Üye Anketi'),
             ),
             const Spacer(),
             DefaultTextStyle(
