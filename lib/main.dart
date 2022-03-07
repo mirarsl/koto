@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:koto/const.dart';
@@ -8,7 +9,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() {
   runApp(const MyApp());
-
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId("eb9eaadf-fdf1-4c8b-ad2f-beed7118c8c3");
   // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
@@ -46,13 +46,22 @@ void main() {
   });
 }
 
+FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
 class MyApp extends StatelessWidget {
+  void initDynamicLinks() async {
+    dynamicLinks.onLink;
+  }
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
+
     return GetMaterialApp(
       title: 'Koto',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: mainColor,
         accentColor: mainColor,

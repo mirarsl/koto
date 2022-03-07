@@ -57,11 +57,11 @@ class AdvDrawer extends StatelessWidget {
               leading: const Icon(Icons.phone),
               title: const Text('İletişim'),
             ),
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.settings),
-              title: const Text('Ayarlar'),
-            ),
+            // ListTile(
+            //   onTap: () {},
+            //   leading: const Icon(Icons.settings),
+            //   title: const Text('Ayarlar'),
+            // ),
             ListTile(
               onTap: () {
                 Get.offAll(const Start());
@@ -75,40 +75,40 @@ class AdvDrawer extends StatelessWidget {
               title: const Text('Üye Anketi'),
             ),
             const Spacer(),
-            DefaultTextStyle(
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.white54,
-              ),
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Kullanım Şartları',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "Gizlilik Politikası",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // DefaultTextStyle(
+            //   style: const TextStyle(
+            //     fontSize: 12,
+            //     color: Colors.white54,
+            //   ),
+            //   child: Container(
+            //     margin: const EdgeInsets.symmetric(
+            //       vertical: 16.0,
+            //     ),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //       children: [
+            //         TextButton(
+            //           onPressed: () {},
+            //           child: const Text(
+            //             'Kullanım Şartları',
+            //             style: TextStyle(
+            //               color: Colors.white,
+            //             ),
+            //           ),
+            //         ),
+            //         TextButton(
+            //           onPressed: () {},
+            //           child: const Text(
+            //             "Gizlilik Politikası",
+            //             style: TextStyle(
+            //               color: Colors.white,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

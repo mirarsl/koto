@@ -31,7 +31,7 @@ class _StartState extends State<Start> {
   }
 
   final newVersion = NewVersion(
-    forceAppVersion: '1.0.1',
+    forceAppVersion: '1.0.0',
   );
 
   @override
