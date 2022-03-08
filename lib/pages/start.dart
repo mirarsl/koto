@@ -1,5 +1,10 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:data_connection_checker_nulls/data_connection_checker_nulls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_empty_illustration/flutter_empty_illustration.dart';
 import 'package:get/get.dart';
 import 'package:koto/const.dart';
 import 'package:koto/models/draggable_icon.dart';
@@ -34,19 +39,38 @@ class _StartState extends State<Start> {
     forceAppVersion: '1.0.0',
   );
 
+  var internetStatus = true;
+  var subscription;
+
+  void networkControl() async {
+    internetStatus = await DataConnectionChecker().hasConnection;
+    setState(() {});
+  }
+
   @override
   void initState() {
     newVersion.showAlertIfNecessary(context: context);
-    // newVersion.showUpdateDialog(
-    //   context: context,
-    //   versionStatus: versionStatus!,
-    //   dialogTitle: 'Güncelleme Mevcut',
-    //   dialogText: 'Uygulamanız güncel değil. Lütfen güncelleme yapınız.',
-    //   updateButtonText: 'Şimdi Güncelle',
-    //   dismissButtonText: 'Sonra',
-    // );
+    networkControl();
+    var listener = DataConnectionChecker().onStatusChange.listen((event) {
+      networkControl();
+    });
+
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      if (result != ConnectivityResult.none) {
+        internetStatus = await DataConnectionChecker().hasConnection;
+      }
+    });
+
     loadPage();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   final advancedDrawerController = AdvancedDrawerController();
@@ -191,34 +215,69 @@ class _StartState extends State<Start> {
       controller: advancedDrawerController,
       backdropColor: Colors.white24,
       drawer: const AdvDrawer(),
-      child: Scaffold(
-        appBar: MyAppBar(advController: advancedDrawerController),
-        body: SmartRefresher(
-          onRefresh: _onRefresh,
-          controller: _refreshController,
-          enablePullDown: true,
-          header: const WaterDropMaterialHeader(
-            color: Colors.white,
-            backgroundColor: mainColor,
-          ),
-          child: SafeArea(
-            child: ReorderableWrap(
-              padding: const EdgeInsets.symmetric(
-                vertical: 30,
-                horizontal: 15,
+      child: internetStatus
+          ? Scaffold(
+              appBar: MyAppBar(advController: advancedDrawerController),
+              body: SmartRefresher(
+                onRefresh: _onRefresh,
+                controller: _refreshController,
+                enablePullDown: true,
+                header: const WaterDropMaterialHeader(
+                  color: Colors.white,
+                  backgroundColor: mainColor,
+                ),
+                child: SafeArea(
+                  child: ReorderableWrap(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                      horizontal: 15,
+                    ),
+                    alignment: WrapAlignment.start,
+                    needsLongPressDraggable: false,
+                    spacing: 15,
+                    runSpacing: 15.0,
+                    onReorder: _onReorder,
+                    ignorePrimaryScrollController: true,
+                    children: _iconList,
+                  ),
+                ),
               ),
-              alignment: WrapAlignment.start,
-              needsLongPressDraggable: false,
-              spacing: 15,
-              runSpacing: 15.0,
-              onReorder: _onReorder,
-              ignorePrimaryScrollController: true,
-              children: _iconList,
+              bottomNavigationBar: const BottomBar(cIndex: 0),
+            )
+          : CustomNoInternetWidget(
+              textWidget: Column(
+                children: [
+                  Text(
+                    "İnternet Bağlantısı Koptu",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black.withOpacity(.6),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      networkControl();
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        mainColor,
+                      ),
+                    ),
+                    child: const Text(
+                      "Tekrar Bağlan",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-        bottomNavigationBar: const BottomBar(cIndex: 0),
-      ),
     );
   }
 }

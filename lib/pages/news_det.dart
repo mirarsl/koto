@@ -103,220 +103,241 @@ class _NewsDetState extends State<NewsDet> {
                 right: 15,
                 bottom: 20,
               ),
-              child: HtmlWidget(
-                pageData,
-                onTapImage: (image) {},
-                textStyle: const TextStyle(fontSize: 14.5, height: 1.25),
-                onTapUrl: (href) {
-                  if (!href.startsWith('http')) {
-                    href = "https://koto.org.tr/" + href;
-                  }
-                  launchURL(href);
-                  return true;
-                },
-                onLoadingBuilder: (context, element, status) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: mainColor,
-                    ),
-                  );
-                },
-                customWidgetBuilder: (element) {
-                  if (element.className == 'document') {
-                    String? href = element.attributes['href'];
-                    return DocTitle(
-                      text: element.text,
-                      href: href!,
-                    );
-                  } else if (element.localName == 'h1') {
-                    return HeadTitle(text: element.text);
-                  } else if (element.localName == 'h2' ||
-                      element.localName == 'h3' ||
-                      element.localName == 'h4' ||
-                      element.localName == 'h5' ||
-                      element.localName == 'h6') {
-                    return SectionTitle(text: element.text);
-                  } else if (element.id == "main-slider") {
-                    var swipes = element.children.first.children;
-                    for (var data in swipes) {
-                      thumbImages.add(
-                          data.children.first.attributes["src"].toString());
-                    }
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                            spreadRadius: 2,
-                          )
-                        ],
-                      ),
-                      height: (MediaQuery.of(context).size.width / 16) * 12,
-                      width: MediaQuery.of(context).size.width,
-                      child: Swiper(
-                        itemBuilder: (BuildContext context, int index) {
-                          var imgAttr =
-                              swipes[index].children.first.attributes["src"];
-
-                          return SingleSlide(
-                            imgAttr: imgAttr,
-                            sourceList: thumbImages,
-                            id: index,
-                            controller: swiperController,
-                          );
-                          return Container();
-                        },
-                        itemCount: swipes.length,
-                        pagination: swipes.length > 1
-                            ? kotoSliderArrow(swiperController)
-                            : null,
-                        controller: swiperController,
-                        loop: swipes.length > 1 ? true : false,
-                      ),
-                    );
-                  } else if (element.localName == "img") {
-                    String? imgSrc = element.attributes['src'];
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            HeroDialogRoute<void>(
-                              builder: (BuildContext context) =>
-                                  InteractiveviewerGallery(
-                                sources: [imgSrc],
-                                initIndex: 0,
-                                itemBuilder: (context, index, status) =>
-                                    Image.network(
-                                  imgSrc!.startsWith('http')
-                                      ? imgSrc
-                                      : 'http://koto.org.tr/$imgSrc',
-                                  fit: BoxFit.contain,
-                                  height: MediaQuery.of(context).size.width,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    }
-                                    return const Center(
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation(mainColor),
-                                        strokeWidth: 2,
-                                        backgroundColor: mainColor,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Image.network(
-                          imgSrc!.startsWith('http')
-                              ? imgSrc
-                              : 'http://koto.org.tr/$imgSrc',
-                          loadingBuilder: (context, img, event) {
-                            if (event == null) return img;
-
-                            return SizedBox(
-                              height:
-                                  (MediaQuery.of(context).size.width / 16) * 9,
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  color: mainColor,
-                                ),
-                              ),
-                            );
-                          },
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      ),
-                    );
-                  } else if (element.localName == "table") {
-                    var heads = [], rows = [];
-                    for (var data in element.children) {
-                      if (data.localName == "thead") {
-                        heads = data.children.first.children;
-                      } else if (data.localName == "tbody") {
-                        rows = data.children;
+              child: ListView(
+                // physics: NeverScrollableScrollPhysics(),
+                children: [
+                  HtmlWidget(
+                    pageData,
+                    onTapImage: (image) {},
+                    textStyle: const TextStyle(fontSize: 14.5, height: 1.25),
+                    onTapUrl: (href) {
+                      if (!href.startsWith('http')) {
+                        href = "https://koto.org.tr/" + href;
                       }
-                    }
-                    if (rows.length < 6) {
-                      tableHeight = (rows.length * 100) + 60;
-                    } else {
-                      tableHeight = Get.height - 250;
-                    }
-                    if (heads.isNotEmpty) {
-                      return MyHtmlTable(
-                        tableHeight: tableHeight,
-                        heads: heads,
-                        rows: rows,
+                      launchURL(href);
+                      return true;
+                    },
+                    onLoadingBuilder: (context, element, status) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: mainColor,
+                        ),
                       );
-                    }
-                  } else if (element.className == "singleBelge") {
-                    String? text = element.children.first.text;
-                    String? href = element.children.first.attributes['href'];
-                    return AccordionTitle(
-                      text: text,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                NewsDet('http://koto.org.tr/$href'),
+                    },
+                    customWidgetBuilder: (element) {
+                      if (element.className == 'document') {
+                        String? href = element.attributes['href'];
+                        return DocTitle(
+                          text: element.text,
+                          href: href!,
+                        );
+                      } else if (element.localName == 'h1') {
+                        return HeadTitle(text: element.text);
+                      } else if (element.localName == 'h2' ||
+                          element.localName == 'h3' ||
+                          element.localName == 'h4' ||
+                          element.localName == 'h5' ||
+                          element.localName == 'h6') {
+                        return SectionTitle(text: element.text);
+                      } else if (element.id == "main-slider") {
+                        var swipes = element.children.first.children;
+                        for (var data in swipes) {
+                          thumbImages.add(
+                              data.children.first.attributes["src"].toString());
+                        }
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              )
+                            ],
+                          ),
+                          height: (MediaQuery.of(context).size.width / 16) * 12,
+                          width: MediaQuery.of(context).size.width,
+                          child: Swiper(
+                            itemBuilder: (BuildContext context, int index) {
+                              var imgAttr = swipes[index]
+                                  .children
+                                  .first
+                                  .attributes["src"];
+
+                              return SingleSlide(
+                                imgAttr: imgAttr,
+                                sourceList: thumbImages,
+                                id: index,
+                                controller: swiperController,
+                              );
+                              return Container();
+                            },
+                            itemCount: swipes.length,
+                            pagination: swipes.length > 1
+                                ? kotoSliderArrow(swiperController)
+                                : null,
+                            controller: swiperController,
+                            loop: swipes.length > 1 ? true : false,
                           ),
                         );
-                        // Get.to(() => MyHomePage());
-                      },
-                    );
-                  } else if (element.className == "event-calendar") {
-                    var calendarList = element.children;
-                    return EventCalendar(
-                      source: calendarList,
-                    );
-                  } else if (element.className == "video-item") {
-                    String? videoLink =
-                        element.children.first.attributes['href'];
-                    String? imageLink =
-                        element.children.first.children.first.attributes['src'];
-                    String? text = element.children.first.children[1].text;
-                    String desc = "";
-                    if (element.children.first.children.asMap()[3] != null) {
-                      desc = element.children.first.children[3].text;
-                    }
-                    return RawMaterialButton(
-                      onPressed: () {
-                        videoBottomSheet(context, videoLink);
-                      },
-                      child: SingleVideo(
-                        imageLink: imageLink,
-                        text: text,
-                        desc: desc,
-                      ),
-                    );
-                  } else if (element.className == "navbar-menu") {
-                    var menu = element.children.first.children;
-                    return NavMenu(
-                      menu: menu,
-                    );
-                  } else if (element.className == "koto-kent-item-section") {
-                    var imageLink = element.children.first.attributes['src'];
-                    var title = element.children[1].children.first.text;
-                    var desc = element.children[1].children[1].text;
-                    var href =
-                        element.children[1].children[2].attributes['href'];
-                    return KotoKentItem(
-                      imageLink: imageLink!,
-                      title: title,
-                      desc: desc,
-                      href: href!,
-                    );
-                  }
-                  return null;
-                },
+                      } else if (element.localName == "img") {
+                        String? imgSrc = element.attributes['src'];
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                HeroDialogRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      InteractiveviewerGallery(
+                                    sources: [imgSrc],
+                                    initIndex: 0,
+                                    itemBuilder: (context, index, status) =>
+                                        Image.network(
+                                      imgSrc!.startsWith('http')
+                                          ? imgSrc
+                                          : 'http://koto.org.tr/$imgSrc',
+                                      fit: BoxFit.contain,
+                                      height: MediaQuery.of(context).size.width,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor: AlwaysStoppedAnimation(
+                                                mainColor),
+                                            strokeWidth: 2,
+                                            backgroundColor: mainColor,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Image.network(
+                              imgSrc!.startsWith('http')
+                                  ? imgSrc
+                                  : 'http://koto.org.tr/$imgSrc',
+                              loadingBuilder: (context, img, event) {
+                                if (event == null) return img;
+
+                                return SizedBox(
+                                  height:
+                                      (MediaQuery.of(context).size.width / 16) *
+                                          9,
+                                  child: const Center(
+                                    child: CircularProgressIndicator(
+                                      color: mainColor,
+                                    ),
+                                  ),
+                                );
+                              },
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                          ),
+                        );
+                      } else if (element.localName == "table") {
+                        var heads = [], rows = [];
+                        for (var data in element.children) {
+                          if (data.localName == "thead") {
+                            heads = data.children.first.children;
+                          } else if (data.localName == "tbody") {
+                            rows = data.children;
+                          }
+                        }
+                        if (rows.length < 6) {
+                          tableHeight = (rows.length * 100) + 60;
+                        } else {
+                          tableHeight = Get.height - 250;
+                        }
+                        if (heads.isNotEmpty) {
+                          return MyHtmlTable(
+                            tableHeight: tableHeight,
+                            heads: heads,
+                            rows: rows,
+                          );
+                        }
+                      } else if (element.className == "singleBelge") {
+                        String? text = element.children.first.text;
+                        String? href =
+                            element.children.first.attributes['href'];
+                        return AccordionTitle(
+                          text: text,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NewsDet('http://koto.org.tr/$href'),
+                              ),
+                            );
+                            // Get.to(() => MyHomePage());
+                          },
+                        );
+                      } else if (element.className == "event-calendar") {
+                        var calendarList = element.children;
+                        return EventCalendar(
+                          source: calendarList,
+                        );
+                      } else if (element.className == "video-item") {
+                        String? videoLink =
+                            element.children.first.attributes['href'];
+                        String? imageLink = element
+                            .children.first.children.first.attributes['src'];
+                        String? text = element.children.first.children[1].text;
+                        String desc = "";
+                        if (element.children.first.children.asMap()[3] !=
+                            null) {
+                          desc = element.children.first.children[3].text;
+                        }
+                        return RawMaterialButton(
+                          onPressed: () {
+                            videoBottomSheet(context, videoLink);
+                          },
+                          child: SingleVideo(
+                            imageLink: imageLink,
+                            text: text,
+                            desc: desc,
+                          ),
+                        );
+                      } else if (element.className == "navbar-menu") {
+                        var menu = element.children.first.children;
+                        return NavMenu(
+                          menu: menu,
+                        );
+                      } else if (element.className ==
+                          "koto-kent-item-section") {
+                        var imageLink =
+                            element.children.first.attributes['src'];
+                        var title = element.children[1].children.first.text;
+                        var desc = element.children[1].children[1].text;
+                        var href =
+                            element.children[1].children[2].attributes['href'];
+                        return KotoKentItem(
+                          imageLink: imageLink!,
+                          title: title,
+                          desc: desc,
+                          href: href!,
+                        );
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 60,
+                    width: double.infinity,
+                  ),
+                  const Text(
+                    "Kaynak: http://koto.org.tr",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
               ),
             ),
           ),

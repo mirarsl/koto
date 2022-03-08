@@ -23,7 +23,9 @@ class SlideWithImage extends StatelessWidget {
     return RawMaterialButton(
       onPressed: () {
         Get.to(
-          NewsDet("http://koto.org.tr/${href.toString()}"),
+          () => NewsDet(
+            "http://koto.org.tr/${href.toString()}",
+          ),
         );
       },
       child: Column(

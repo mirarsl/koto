@@ -75,6 +75,82 @@ class AdvDrawer extends StatelessWidget {
               title: const Text('Üye Anketi'),
             ),
             const Spacer(),
+            Column(
+              children: [
+                Row(
+                  children: const [
+                    SizedBox(
+                      width: 80,
+                      child: Text(
+                        "E-Posta",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                      child: Text(
+                        ":",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: Text(
+                        "koto@koto.org.tr",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: const [
+                    SizedBox(
+                      width: 80,
+                      child: Text(
+                        "Telefon",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                      child: Text(
+                        ":",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: Text(
+                        "90 (262) 322 3010",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
             // DefaultTextStyle(
             //   style: const TextStyle(
             //     fontSize: 12,

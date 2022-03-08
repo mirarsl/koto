@@ -110,7 +110,9 @@ class SlideWithOutImage extends StatelessWidget {
                 ),
                 onPressed: () {
                   Get.to(
-                    NewsDet("http://koto.org.tr/${href.toString()}"),
+                    () => NewsDet(
+                      "http://koto.org.tr/${href.toString()}",
+                    ),
                   );
                 },
                 child: const Text("Devamını Gör"),
