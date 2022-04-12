@@ -20,56 +20,59 @@ class SingleSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          HeroDialogRoute<void>(
-            builder: (BuildContext context) => InteractiveviewerGallery(
-              sources: sourceList,
-              initIndex: id,
-              onPageChanged: (index) {
-                if (controller != null) {
-                  controller!.move(index);
-                }
-              },
-              itemBuilder: (context, index, status) => Image.network(
-                "http://koto.org.tr/${sourceList[index]}",
-                fit: BoxFit.contain,
-                height: MediaQuery.of(context).size.width,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
+    return Container(
+      color: Colors.white,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            HeroDialogRoute<void>(
+              builder: (BuildContext context) => InteractiveviewerGallery(
+                sources: sourceList,
+                initIndex: id,
+                onPageChanged: (index) {
+                  if (controller != null) {
+                    controller!.move(index);
                   }
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(mainColor),
-                      strokeWidth: 2,
-                      backgroundColor: mainColor,
-                    ),
-                  );
                 },
-              ),
-            ),
-          ),
-        );
-      },
-      child: Image.network(
-        imgAttr != "" ? "http://koto.org.tr/$imgAttr" : "",
-        loadingBuilder: (context, img, event) {
-          if (event == null) return img;
-
-          return SizedBox(
-            height: (MediaQuery.of(context).size.width / 16) * 9,
-            child: const Center(
-              child: CircularProgressIndicator(
-                color: mainColor,
+                itemBuilder: (context, index, status) => Image.network(
+                  "http://koto.org.tr/${sourceList[index]}",
+                  fit: BoxFit.contain,
+                  height: MediaQuery.of(context).size.width,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(mainColor),
+                        strokeWidth: 2,
+                        backgroundColor: mainColor,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           );
         },
-        height: (MediaQuery.of(context).size.width / 16) * 9,
-        width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
+        child: Image.network(
+          imgAttr != "" ? "http://koto.org.tr/$imgAttr" : "",
+          loadingBuilder: (context, img, event) {
+            if (event == null) return img;
+
+            return SizedBox(
+              height: (MediaQuery.of(context).size.width / 16) * 9,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: mainColor,
+                ),
+              ),
+            );
+          },
+          height: (MediaQuery.of(context).size.width / 16) * 9,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }

@@ -56,7 +56,7 @@ class _KotoBakisState extends State<KotoBakis> {
         Get.to(() => const NewsDet('http://koto.org.tr/app_missionvision.php'));
       },
     },
-    "İş Programı 2019": {
+    "İş Programı 2021": {
       'icon': "images/koto-bakis/is-programi.png",
       'navigate': () {
         Get.to(() => const NewsDet('http://koto.org.tr/app_isprogrami.php'));
