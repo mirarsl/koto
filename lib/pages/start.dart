@@ -233,7 +233,7 @@ class _StartState extends State<Start> {
                       horizontal: 15,
                     ),
                     alignment: WrapAlignment.start,
-                    needsLongPressDraggable: false,
+                    needsLongPressDraggable: true,
                     spacing: 15,
                     runSpacing: 15.0,
                     onReorder: _onReorder,
