@@ -2,16 +2,16 @@ name: koto
 description: Kocaeli Ticaret Odası
 
 publish_to: 'none'
-version: 1.0.4+7
+version: 2.0.0+9
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.18.4 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_widget_from_html_core: ^0.8.4
+  flutter_widget_from_html_core: ^0.9.0
   http: ^0.13.4
   flutter_swiper_plus: ^2.0.4
   flutter_advanced_drawer: ^1.3.0
@@ -19,26 +19,26 @@ dependencies:
   url_launcher: ^6.0.20
   animated_text_kit: ^4.2.1
   pull_to_refresh: ^2.0.0
-  flutter_overlay_loader: ^1.0.3
+  flutter_overlay_loader: ^2.0.0
   interactiveviewer_gallery: ^0.6.0
-  reorderables: ^0.4.2
+  reorderables: ^0.5.1
   shared_preferences: ^2.0.13
   get: ^4.6.1
   youtube_player_flutter: ^8.0.0
   flutter_expandable_table: ^1.0.2
-  syncfusion_flutter_calendar: ^19.4.54
+  syncfusion_flutter_calendar: ^20.3.52
   new_version: ^0.3.0
-  onesignal_flutter: ^3.2.8
-  firebase_core: ^1.13.1
-  firebase_dynamic_links: ^4.0.8
-  connectivity_plus: ^2.2.1
+  onesignal_flutter: ^3.4.2
+  firebase_core: ^2.1.1
+  firebase_dynamic_links: ^5.0.3
+  connectivity_plus: ^3.0.2
   data_connection_checker_nulls: ^0.0.2
   flutter_empty_illustration: ^0.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 flutter:
   uses-material-design: true
 

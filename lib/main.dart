@@ -1,4 +1,4 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:koto/const.dart';
@@ -7,7 +7,13 @@ import 'package:koto/pages/loader.dart';
 import 'package:koto/pages/start.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId("eb9eaadf-fdf1-4c8b-ad2f-beed7118c8c3");
@@ -25,18 +31,20 @@ void main() {
 
   OneSignal.shared
       .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    // Will be called whenever a notification is opened/button pressed.
+    print(result);
   });
 
   OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
     // Will be called whenever the permission changes
     // (ie. user taps Allow on the permission prompt in iOS)
+    print(changes);
   });
 
   OneSignal.shared
       .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
     // Will be called whenever the subscription changes
     // (ie. user gets registered with OneSignal and gets a user ID)
+    print(changes);
   });
 
   OneSignal.shared.setEmailSubscriptionObserver(
@@ -46,19 +54,11 @@ void main() {
   });
 }
 
-FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
-
 class MyApp extends StatelessWidget {
-  void initDynamicLinks() async {
-    dynamicLinks.onLink;
-  }
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    WidgetsFlutterBinding.ensureInitialized();
-
     return GetMaterialApp(
       title: 'Koto',
       debugShowCheckedModeBanner: false,

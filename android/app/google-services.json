@@ -29,6 +29,14 @@
             {
               "client_id": "999181122189-hvq90b3l2kgnsvht3kp70dih8k8bgmrr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "999181122189-1alqods403vvdufovb8fqbv3kuf7m968.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yasagames.koto",
+                "app_store_id": "1612670891"
+              }
             }
           ]
         }

@@ -4,9 +4,9 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
-	<key>com.apple.security.application-groups</key>
+	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>group.com.yasagames.koto.onesignal</string>
+		<string>applinks:app.koto.org.tr</string>
 	</array>
 </dict>
 </plist>
