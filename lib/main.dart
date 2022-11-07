@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:koto/const.dart';
 import 'package:koto/pages/home.dart';
 import 'package:koto/pages/loader.dart';
+import 'package:koto/pages/news_det.dart';
 import 'package:koto/pages/start.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
@@ -30,27 +33,19 @@ void main() async {
   });
 
   OneSignal.shared
-      .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-    print(result);
+      .setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
+    final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks
+        .instance
+        .getDynamicLink(Uri.parse(result.notification.launchUrl.toString()));
+    if (initialLink != null) {
+      Get.to(NewsDet(initialLink.link.toString()));
+    }
   });
 
   OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
     // Will be called whenever the permission changes
     // (ie. user taps Allow on the permission prompt in iOS)
     print(changes);
-  });
-
-  OneSignal.shared
-      .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-    // Will be called whenever the subscription changes
-    // (ie. user gets registered with OneSignal and gets a user ID)
-    print(changes);
-  });
-
-  OneSignal.shared.setEmailSubscriptionObserver(
-      (OSEmailSubscriptionStateChanges emailChanges) {
-    // Will be called whenever then user's email subscription changes
-    // (ie. OneSignal.setEmail(email) is called and the user gets registered
   });
 }
 
