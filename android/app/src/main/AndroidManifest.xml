@@ -48,8 +48,7 @@
                  Flutter's first frame. -->
             <meta-data
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
-              android:resource="@drawable/launch_background"
-              />
+              android:resource="@drawable/launch_background" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -63,7 +62,7 @@
                 <data android:scheme="app" android:host="app.koto.org.tr" />
                 <data android:scheme="http" android:host="app.koto.org.tr" />
                 <data android:scheme="https" />
-            </intent-filter>`
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

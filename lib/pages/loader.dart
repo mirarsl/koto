@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:koto/pages/news_det.dart';
 
 import '../const.dart';
 
@@ -16,7 +12,7 @@ class Loader extends StatefulWidget {
 }
 
 class _LoaderState extends State<Loader> {
-  void goHome() async {
+  /*void goHome() async {
     if (widget.initialLink != null) {
       await Future.delayed(const Duration(milliseconds: 1400));
       Get.offAndToNamed('/start');
@@ -25,12 +21,12 @@ class _LoaderState extends State<Loader> {
       await Future.delayed(const Duration(milliseconds: 1400));
       Get.offAndToNamed('/start');
     }
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
-    goHome();
+    /*goHome();*/
   }
 
   @override

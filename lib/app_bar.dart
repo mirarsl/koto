@@ -80,7 +80,7 @@ class AdvDrawer extends StatelessWidget {
                 Row(
                   children: const [
                     SizedBox(
-                      width: 70,
+                      width: 60,
                       child: Text(
                         "E-Posta",
                         style: TextStyle(
@@ -116,7 +116,7 @@ class AdvDrawer extends StatelessWidget {
                 Row(
                   children: const [
                     SizedBox(
-                      width: 70,
+                      width: 60,
                       child: Text(
                         "Telefon",
                         style: TextStyle(

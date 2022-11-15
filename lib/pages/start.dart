@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:data_connection_checker_nulls/data_connection_checker_nulls.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +48,15 @@ class _StartState extends State<Start> {
     setState(() {});
   }
 
+  void loadingAnimation() async {
+    await Future.delayed(const Duration(milliseconds: 1400));
+    _loading = false;
+    setState(() {});
+  }
+
   @override
   void initState() {
+    super.initState();
     newVersion.showAlertIfNecessary(context: context);
     networkControl();
     var listener = DataConnectionChecker().onStatusChange.listen((event) {
@@ -64,7 +72,7 @@ class _StartState extends State<Start> {
     });
 
     loadPage();
-    super.initState();
+    loadingAnimation();
   }
 
   @override
@@ -194,6 +202,7 @@ class _StartState extends State<Start> {
     setState(() {});
   }
 
+  bool _loading = true;
   @override
   Widget build(BuildContext context) {
     void _onReorder(int oldIndex, int newIndex) async {
@@ -210,40 +219,88 @@ class _StartState extends State<Start> {
       prefs.setStringList('icons', pref);
     }
 
+    var today = DateTime.now();
+    var first = DateTime(1897);
+
+    var dif = today.difference(first);
+
     return AdvancedDrawer(
       rtlOpening: true,
       controller: advancedDrawerController,
       backdropColor: Colors.white24,
       drawer: const AdvDrawer(),
       child: internetStatus
-          ? Scaffold(
-              appBar: MyAppBar(advController: advancedDrawerController),
-              body: SmartRefresher(
-                onRefresh: _onRefresh,
-                controller: _refreshController,
-                enablePullDown: true,
-                header: const WaterDropMaterialHeader(
-                  color: Colors.white,
-                  backgroundColor: mainColor,
-                ),
-                child: SafeArea(
-                  child: ReorderableWrap(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 30,
-                      horizontal: 15,
+          ? _loading
+              ? Scaffold(
+                  body: SafeArea(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Image(
+                              image: AssetImage('images/logo2.png'),
+                              height: 100,
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height - 300,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextLiquidFill(
+                                  loadDuration:
+                                      const Duration(milliseconds: 1000),
+                                  waveDuration:
+                                      const Duration(milliseconds: 1000),
+                                  text: '${dif.inDays ~/ 365}. yıl',
+                                  waveColor: mainColor,
+                                  boxBackgroundColor:
+                                      Theme.of(context).canvasColor,
+                                  textStyle: const TextStyle(
+                                    fontSize: 100,
+                                    color: mainColor,
+                                    fontFamily: 'GreatVibes',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    alignment: WrapAlignment.start,
-                    needsLongPressDraggable: true,
-                    spacing: 15,
-                    runSpacing: 15.0,
-                    onReorder: _onReorder,
-                    ignorePrimaryScrollController: true,
-                    children: _iconList,
                   ),
-                ),
-              ),
-              bottomNavigationBar: const BottomBar(cIndex: 0),
-            )
+                )
+              : Scaffold(
+                  appBar: MyAppBar(advController: advancedDrawerController),
+                  body: SmartRefresher(
+                    onRefresh: _onRefresh,
+                    controller: _refreshController,
+                    enablePullDown: true,
+                    header: const WaterDropMaterialHeader(
+                      color: Colors.white,
+                      backgroundColor: mainColor,
+                    ),
+                    child: SafeArea(
+                      child: ReorderableWrap(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 30,
+                          horizontal: 15,
+                        ),
+                        alignment: WrapAlignment.start,
+                        needsLongPressDraggable: true,
+                        spacing: 15,
+                        runSpacing: 15.0,
+                        onReorder: _onReorder,
+                        ignorePrimaryScrollController: true,
+                        children: _iconList,
+                      ),
+                    ),
+                  ),
+                  bottomNavigationBar: const BottomBar(cIndex: 0),
+                )
           : CustomNoInternetWidget(
               textWidget: Column(
                 children: [
